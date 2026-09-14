@@ -117,13 +117,12 @@
 	};
 };
 
-&gmac0 {
+&ethernet {
 	mtd-mac-address = <&factory 0xe000>;
 };
 
 &gsw {
-	mediatek,portmap = "wllll";
-	status = "okay";
+	mediatek,portmap = <0x11>;
 };
 
 &xhci {
