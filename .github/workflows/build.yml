@@ -24,20 +24,47 @@ jobs:
       - name: Configure
         run: |
           rm -f .config
+          rm -f .config
           cat >> .config <<'EOF'
           CONFIG_TARGET_ramips=y
           CONFIG_TARGET_ramips_mt7621=y
           CONFIG_TARGET_ramips_mt7621_DEVICE_ap8221=y
+          CONFIG_PACKAGE_luci=y
+          CONFIG_PACKAGE_luci-ssl=y
           CONFIG_PACKAGE_luci-i18n-base-zh-cn=y
+          CONFIG_PACKAGE_luci-theme-argon=y
+          CONFIG_PACKAGE_luci-app-argon-config=y
           CONFIG_PACKAGE_kmod-mt7615e=y
           CONFIG_PACKAGE_kmod-mt7615-firmware=y
           CONFIG_PACKAGE_kmod-usb3=y
+          CONFIG_PACKAGE_kmod-usb-storage=y
+          CONFIG_PACKAGE_block-mount=y
+          CONFIG_PACKAGE_kmod-fs-ext4=y
+          CONFIG_PACKAGE_kmod-fs-vfat=y
+          CONFIG_PACKAGE_ntfs-3g=y
+          CONFIG_PACKAGE_kmod-usb-net=y
+          CONFIG_PACKAGE_kmod-usb-net-rndis=y
+          CONFIG_PACKAGE_kmod-usb-net-cdc-ether=y
+          CONFIG_PACKAGE_kmod-usb-serial=y
+          CONFIG_PACKAGE_kmod-usb-serial-ch341=y
+          CONFIG_PACKAGE_kmod-usb-serial-cp210x=y
+          CONFIG_PACKAGE_kmod-usb-serial-ftdi=y
+          CONFIG_PACKAGE_kmod-usb-serial-pl2303=y
+          CONFIG_PACKAGE_luci-app-adblock=y
+          CONFIG_PACKAGE_luci-app-ddns=y
+          CONFIG_PACKAGE_luci-app-samba4=y
+          CONFIG_PACKAGE_luci-app-upnp=y
+          CONFIG_PACKAGE_odhcpd-ipv6only=y
+          CONFIG_PACKAGE_luci-proto-ipv6=y
           EOF
           make defconfig
 
       - name: Verify config
         run: |
-          grep -i ap8221 .config || echo "❌ ap8221 没被选中，检查 mk 和 dts"
+          grep -i "CONFIG_TARGET_ramips_mt7621_DEVICE_ap8221=y" .config || echo "❌ ap8221 没被选中"
+          grep -i "CONFIG_PACKAGE_luci=y" .config || echo "❌ luci 没被选中"
+          grep -i "CONFIG_PACKAGE_luci-app-adblock=y" .config || echo "❌ adblock 没被选中"
+          grep -i "CONFIG_PACKAGE_kmod-usb-storage=y" .config || echo "❌ USB 存储没被选中"
 
       - name: Download
         run: make download -j8
