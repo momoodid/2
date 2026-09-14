@@ -1,0 +1,44 @@
+name: Build OpenWrt AP8221
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Install dependencies
+        run: |
+          sudo apt update
+          sudo apt install -y build-essential asciidoc binutils bzip2 gawk gettext git libncurses5-dev libz-dev patch python3 python2.7 unzip zlib1g-dev lib32gcc1 libc6-dev-i386 subversion flex uglifyjs git-core gcc-multilib p7zip p7zip-full msmtp libssl-dev texinfo libglib2.0-dev xmlto qemu-utils upx libelf-dev autoconf automake libtool autopoint device-tree-compiler g++-multilib antlr3 gperf
+
+      - name: Update feeds
+        run: |
+          ./scripts/feeds update -a
+          ./scripts/feeds install -a
+
+      - name: Configure
+        run: |
+          echo "CONFIG_TARGET_ramips=y" >> .config
+          echo "CONFIG_TARGET_ramips_mt7621=y" >> .config
+          echo "CONFIG_TARGET_ramips_mt7621_DEVICE_ap8221=y" >> .config
+          echo "CONFIG_PACKAGE_luci-i18n-base-zh-cn=y" >> .config
+          echo "CONFIG_PACKAGE_kmod-mt7615e=y" >> .config
+          echo "CONFIG_PACKAGE_kmod-mt7615-firmware=y" >> .config
+          echo "CONFIG_PACKAGE_kmod-usb3=y" >> .config
+          make defconfig
+
+      - name: Download
+        run: make download -j8
+
+      - name: Build
+        run: make -j$(nproc) || make -j1 V=s
+
+      - name: Upload
+        uses: actions/upload-artifact@v3
+        with:
+          name: openwrt-ap8221
+          path: bin/targets/ramips/mt7621/
