@@ -6,9 +6,10 @@ on:
 jobs:
   build:
     runs-on: ubuntu-22.04
+
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Install dependencies
         run: |
@@ -22,14 +23,21 @@ jobs:
 
       - name: Configure
         run: |
-          echo "CONFIG_TARGET_ramips=y" >> .config
-          echo "CONFIG_TARGET_ramips_mt7621=y" >> .config
-          echo "CONFIG_TARGET_ramips_mt7621_DEVICE_ap8221=y" >> .config
-          echo "CONFIG_PACKAGE_luci-i18n-base-zh-cn=y" >> .config
-          echo "CONFIG_PACKAGE_kmod-mt7615e=y" >> .config
-          echo "CONFIG_PACKAGE_kmod-mt7615-firmware=y" >> .config
-          echo "CONFIG_PACKAGE_kmod-usb3=y" >> .config
+          rm -f .config
+          cat >> .config <<'EOF'
+          CONFIG_TARGET_ramips=y
+          CONFIG_TARGET_ramips_mt7621=y
+          CONFIG_TARGET_ramips_mt7621_DEVICE_ap8221=y
+          CONFIG_PACKAGE_luci-i18n-base-zh-cn=y
+          CONFIG_PACKAGE_kmod-mt7615e=y
+          CONFIG_PACKAGE_kmod-mt7615-firmware=y
+          CONFIG_PACKAGE_kmod-usb3=y
+          EOF
           make defconfig
+
+      - name: Verify config
+        run: |
+          grep -i ap8221 .config || echo "❌ ap8221 没被选中，检查 mk 和 dts"
 
       - name: Download
         run: make download -j8
@@ -38,7 +46,7 @@ jobs:
         run: make -j$(nproc) || make -j1 V=s
 
       - name: Upload
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: openwrt-ap8221
           path: bin/targets/ramips/mt7621/
