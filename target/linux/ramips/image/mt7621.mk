@@ -682,3 +682,11 @@ define Device/zbt-wg3526-32M
 	kmod-usb3 kmod-usb-ledtrig-usbport wpad-basic
 endef
 TARGET_DEVICES += zbt-wg3526-32M
+
+define Device/ap8221
+  DTS := AP8221
+  IMAGE_SIZE := $(ralink_default_fw_size_32M)
+  DEVICE_TITLE := SKSpruce AP8221
+  DEVICE_PACKAGES := kmod-mt7615e kmod-mt7615-firmware kmod-usb3 wpad-basic
+endef
+TARGET_DEVICES += ap8221
