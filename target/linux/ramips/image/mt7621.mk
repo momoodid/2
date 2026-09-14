@@ -687,6 +687,20 @@ define Device/ap8221
   DTS := AP8221
   IMAGE_SIZE := $(ralink_default_fw_size_32M)
   DEVICE_TITLE := SKSpruce AP8221
+  DEVICE_PACKAGES := \
+	kmod-mt7615e kmod-mt7615-firmware \
+	kmod-usb3 kmod-usb-storage block-mount \
+	kmod-fs-ext4 kmod-fs-vfat ntfs-3g \
+	kmod-usb-net kmod-usb-net-rndis kmod-usb-net-cdc-ether \
+	kmod-usb-serial kmod-usb-serial-ch341 kmod-usb-serial-cp210x \
+	kmod-usb-serial-ftdi kmod-usb-serial-pl2303 \
+	luci luci-ssl luci-i18n-base-zh-cn \
+	luci-theme-argon luci-app-argon-config \
+	luci-app-adblock luci-app-ddns luci-app-samba4 luci-app-upnp \
+	odhcpd-ipv6only luci-proto-ipv6 \
+	wpad-basic
+endef
+TARGET_DEVICES += ap8221
   DEVICE_PACKAGES := kmod-mt7615e kmod-mt7615-firmware kmod-usb3 wpad-basic
 endef
 TARGET_DEVICES += ap8221
