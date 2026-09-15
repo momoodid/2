@@ -24,7 +24,6 @@ jobs:
       - name: Configure
         run: |
           rm -f .config
-          rm -f .config
           cat >> .config <<'EOF'
           CONFIG_TARGET_ramips=y
           CONFIG_TARGET_ramips_mt7621=y
@@ -77,5 +76,5 @@ jobs:
         with:
           name: openwrt-ap8221
           path: |
-             bin/targets/ramips/mt7621/*ap8221*squashfs-sysupgrade.bin
-             bin/targets/ramips/mt7621/*ap8221*initramfs-kernel.bin
+            bin/targets/ramips/mt7621/*ap8221*squashfs-sysupgrade.bin
+            bin/targets/ramips/mt7621/*ap8221*initramfs-kernel.bin
