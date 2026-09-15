@@ -89,6 +89,9 @@ jobs:
           # CONFIG_third_card is not set
           CONFIG_PACKAGE_mtk-luci-plugin=y
           CONFIG_LUCI_APP_MTKWIFI=y
+          CONFIG_PACKAGE_mtk-nvram=y
+          CONFIG_PACKAGE_uci2dat=y
+          CONFIG_PACKAGE_wificonf=y
           EOF
           make defconfig
 
