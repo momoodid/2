@@ -3,11 +3,8 @@
 [ "$ACTION" = "add" ] || exit 0
 
 case "$INTERFACE" in
-usb0|usb1|usb2|eth1|rndis0)
-    # 拉接口
+usb*|eth1|rndis*|wwan*)
     ifconfig "$INTERFACE" up
-
-    # 拿 IP
     udhcpc -i "$INTERFACE" -b -q -t 5
     ;;
 esac
