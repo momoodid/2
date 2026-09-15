@@ -76,4 +76,6 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: openwrt-ap8221
-          path: bin/targets/ramips/mt7621/
+          path: |
+             bin/targets/ramips/mt7621/*ap8221*squashfs-sysupgrade.bin
+             bin/targets/ramips/mt7621/*ap8221*initramfs-kernel.bin
