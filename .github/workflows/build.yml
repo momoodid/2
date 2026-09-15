@@ -33,7 +33,7 @@ jobs:
           CONFIG_PACKAGE_luci-i18n-base-zh-cn=y
           CONFIG_PACKAGE_luci-theme-argon=y
           CONFIG_PACKAGE_luci-app-argon-config=y
-          CONFIG_PACKAGE_kmod-mt7615e=y
+          CONFIG_PACKAGE_kmod-mt_wifi=y
           CONFIG_PACKAGE_kmod-mt7615-firmware=y
           CONFIG_PACKAGE_kmod-usb3=y
           CONFIG_PACKAGE_kmod-usb-storage=y
@@ -55,15 +55,59 @@ jobs:
           CONFIG_PACKAGE_luci-app-upnp=y
           CONFIG_PACKAGE_odhcpd-ipv6only=y
           CONFIG_PACKAGE_luci-proto-ipv6=y
+          CONFIG_PACKAGE_luci-proto-ipv6=y
+          # CONFIG_PACKAGE_kmod-mt7615e is not set
+          # CONFIG_PACKAGE_kmod-mt7615-firmware is not set
+          CONFIG_PACKAGE_kmod-mt_wifi=y
+          CONFIG_PACKAGE_wifi-l1profile=y
+          CONFIG_MTK_SUPPORT_OPENWRT=y
+          CONFIG_MTK_WIFI_DRIVER=y
+          CONFIG_MTK_FIRST_IF_MT7615E=y
+          CONFIG_MTK_SECOND_IF_NONE=y
+          CONFIG_MTK_THIRD_IF_NONE=y
+          CONFIG_MTK_RT_FIRST_CARD=7615
+          CONFIG_MTK_MT_WIFI=y
+          CONFIG_MTK_MT_WIFI_PATH="mt_wifi"
+          CONFIG_MTK_FIRST_IF_EEPROM_FLASH=y
+          CONFIG_MTK_RT_FIRST_CARD_EEPROM="flash"
+          CONFIG_MTK_DBDC_MODE=y
+          CONFIG_MTK_CHIP_MT7615E=y
+          CONFIG_first_card=y
+          CONFIG_first_card_name="MT7615E"
+          CONFIG_first_card_profile_path="/etc/wireless/mt7615/mt7615.1.2G.dat;/etc/wireless/mt7615/mt7615.1.5G.dat"
+          CONFIG_first_card_init_script="/lib/wifi/mt7615.sh"
+          CONFIG_first_card_init_compatible="mt_wifi"
+          CONFIG_first_card_EEPROM_offset="0x40000"
+          CONFIG_first_card_EEPROM_size="0x4000"
+          CONFIG_first_card_EEPROM_name="e2p"
+          CONFIG_first_card_main_ifname="ra0;rax0"
+          CONFIG_first_card_ext_ifname="ra;rax"
+          CONFIG_first_card_wds_ifname="wds;wdsx"
+          CONFIG_first_card_apcli_ifname="apcli;apclix"
+          CONFIG_first_card_mesh_ifname="mesh;meshx"
+          CONFIG_first_card_nvram_zone="RT2860;RT2860"
+          CONFIG_first_card_single_sku_path="/etc/wireless/mt7615/mt7615-sku.dat"
+          CONFIG_first_card_bf_sku_path="/etc/wireless/mt7615/mt7615-sku-bf.dat"
+          # CONFIG_second_card is not set
+          # CONFIG_third_card is not set
+          CONFIG_PACKAGE_mtk-luci-plugin=y
+          CONFIG_LUCI_APP_MTKWIFI=y
           EOF
           make defconfig
 
       - name: Verify config
         run: |
+          echo "===== 检查闭源驱动关键项 ====="
           grep -i "CONFIG_TARGET_ramips_mt7621_DEVICE_ap8221=y" .config || echo "❌ ap8221 没被选中"
-          grep -i "CONFIG_PACKAGE_luci=y" .config || echo "❌ luci 没被选中"
-          grep -i "CONFIG_PACKAGE_luci-app-adblock=y" .config || echo "❌ adblock 没被选中"
-          grep -i "CONFIG_PACKAGE_kmod-usb-storage=y" .config || echo "❌ USB 存储没被选中"
+          grep -i "CONFIG_PACKAGE_kmod-mt_wifi=y" .config || echo "❌ 闭源驱动 kmod-mt_wifi 没被选中"
+          grep -i "CONFIG_PACKAGE_wifi-l1profile=y" .config || echo "❌ wifi-l1profile 没被选中"
+          grep -i "CONFIG_PACKAGE_kmod-mt7615e" .config && echo "⚠️ 开源 mt7615e 可能仍被选中，请检查" || echo "✅ 开源 mt7615e 已禁用"
+          echo "===== 检查 eeprom 偏移 ====="
+          grep -i "CONFIG_first_card_EEPROM_offset" .config || echo "❌ EEPROM offset 没配置"
+          grep -i "CONFIG_first_card_EEPROM_size" .config || echo "❌ EEPROM size 没配置"
+          grep -i "CONFIG_first_card_profile_path" .config || echo "❌ profile path 没配置"
+          echo "===== 检查是否选错设备 ====="
+          grep -i "CONFIG_TARGET_ramips_mt7621_DEVICE_netgear_r6350=y" .config && echo "❌ 选成 R6350 了！" || echo "✅ 没有选 R6350"
 
       - name: Download
         run: make download -j8
