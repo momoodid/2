@@ -123,6 +123,7 @@ endif
 
 define Package/base-files/install
 	$(CP) ./files/* $(1)/
+	chmod 0755 $(1)/etc/hotplug.d/net/20-usb-wan
 	$(Package/base-files/install-key)
 	$(Package/base-files/nand-support)
 	if [ -d $(GENERIC_PLATFORM_DIR)/base-files/. ]; then \
