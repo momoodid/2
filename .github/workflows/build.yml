@@ -66,9 +66,7 @@ jobs:
           CONFIG_MTK_MT_WIFI=y
           CONFIG_MTK_MT_WIFI_PATH="mt_wifi"
           CONFIG_MTK_FIRST_IF_EEPROM_FLASH=y
-          CONFIG_MTK_RT_FIRST_CARD_EEPROM="flash"
           CONFIG_MTK_DBDC_MODE=y
-          CONFIG_MTK_CHIP_MT7615E=y
           CONFIG_first_card=y
           CONFIG_first_card_name="MT7615E"
           CONFIG_first_card_profile_path="/etc/wireless/mt7615/mt7615.1.2G.dat;/etc/wireless/mt7615/mt7615.1.5G.dat"
@@ -92,6 +90,34 @@ jobs:
           CONFIG_PACKAGE_mtk-nvram=y
           CONFIG_PACKAGE_uci2dat=y
           CONFIG_PACKAGE_wificonf=y
+          CONFIG_MTK_WIFI_MODE_AP=y
+          CONFIG_MTK_APCLI_SUPPORT=y
+          CONFIG_MTK_MBSS_SUPPORT=y
+          CONFIG_MTK_WDS_SUPPORT=y
+          CONFIG_MTK_WSC_INCLUDED=y
+          CONFIG_MTK_WSC_V2_SUPPORT=y
+          CONFIG_MTK_DOT11W_PMF_SUPPORT=y
+          CONFIG_MTK_TXBF_SUPPORT=y
+          CONFIG_MTK_IGMP_SNOOP_SUPPORT=y
+          CONFIG_MTK_RTMP_FLASH_SUPPORT=y
+          CONFIG_MTK_PRE_CAL_TRX_SET1_SUPPORT=y
+          CONFIG_MTK_RLM_CAL_CACHE_SUPPORT=y
+          CONFIG_MTK_PRE_CAL_TRX_SET2_SUPPORT=y
+          CONFIG_MTK_ATE_SUPPORT=y
+          CONFIG_MTK_UAPSD=y
+          CONFIG_MTK_TCP_RACK_SUPPORT=y
+          CONFIG_MTK_RED_SUPPORT=y
+          CONFIG_MTK_MCAST_RATE_SPECIFIC=y
+          CONFIG_MTK_VOW_SUPPORT=y
+          CONFIG_MTK_BAND_STEERING=y
+          CONFIG_MTK_GREENAP_SUPPORT=y
+          CONFIG_MTK_PCIE_ASPM_DYM_CTRL_SUPPORT=y
+          CONFIG_MTK_MUMIMO_SUPPORT=y
+          CONFIG_MTK_MU_RA_SUPPORT=y
+          CONFIG_MTK_MAC_REPEATER_SUPPORT=y
+          CONFIG_MTK_WIFI_MT_MAC=y
+          CONFIG_MTK_MT_MAC=y
+          CONFIG_MTK_CHIP_MT7615E=y
           EOF
           make defconfig
 
@@ -106,6 +132,8 @@ jobs:
           grep -i "CONFIG_first_card_EEPROM_offset" .config || echo "❌ EEPROM offset 没配置"
           grep -i "CONFIG_first_card_EEPROM_size" .config || echo "❌ EEPROM size 没配置"
           grep -i "CONFIG_first_card_profile_path" .config || echo "❌ profile path 没配置"
+          grep -i "CONFIG_MTK_DBDC_MODE=y" .config || echo "❌ DBDC 模式没开"
+          grep -i "CONFIG_MTK_APCLI_SUPPORT=y" .config || echo "❌ APCLI 没开，wapp.c 可能编译失败"
           echo "===== 检查是否选错设备 ====="
           grep -i "CONFIG_TARGET_ramips_mt7621_DEVICE_netgear_r6350=y" .config && echo "❌ 选成 R6350 了！" || echo "✅ 没有选 R6350"
 
