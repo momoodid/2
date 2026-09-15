@@ -688,7 +688,6 @@ define Device/ap8221
   IMAGE_SIZE := $(ralink_default_fw_size_32M)
   DEVICE_TITLE := SKSpruce AP8221
   DEVICE_PACKAGES := \
-	kmod-mt7615e kmod-mt7615-firmware \
 	kmod-usb3 kmod-usb-storage block-mount \
 	kmod-fs-ext4 kmod-fs-vfat ntfs-3g \
 	kmod-usb-net kmod-usb-net-rndis kmod-usb-net-cdc-ether \
