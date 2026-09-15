@@ -698,6 +698,7 @@ define Device/ap8221
 	luci-theme-argon luci-app-argon-config \
 	luci-app-adblock luci-app-ddns luci-app-samba4 luci-app-upnp \
 	odhcpd-ipv6only luci-proto-ipv6 \
+	swconfig \
 	wpad-basic
 endef
 TARGET_DEVICES += ap8221
