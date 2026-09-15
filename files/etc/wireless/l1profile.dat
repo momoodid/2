@@ -1,7 +1,7 @@
 Default
 INDEX0=MT7615
 INDEX0_profile_path=/etc/wireless/mt7615/mt7615.1.2G.dat;/etc/wireless/mt7615/mt7615.1.5G.dat
-INDEX0_init_script=/lib/wifi/mt7615.sh
+INDEX0_init_script=/lib/wifi/mt7615.lua
 INDEX0_init_compatible=mt7615;mt7615
 INDEX0_EEPROM_offset=0x0
 INDEX0_EEPROM_size=0x4000
