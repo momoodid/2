@@ -693,12 +693,25 @@ define Device/ap8221
 	kmod-fs-ext4 kmod-fs-vfat ntfs-3g \
 	kmod-usb-net kmod-usb-net-rndis kmod-usb-net-cdc-ether \
 	kmod-usb-net-asix kmod-usb-net-rtl8152 \
+	kmod-usb-net-cdc-ncm kmod-usb-net-asix-ax88179 \
+	kmod-usb-net-smsc95xx kmod-usb-net-dm9601-ether \
+	kmod-usb-net-mcs7830 kmod-usb-net-pegasus kmod-usb-net-rtl8150 \
 	usb-modeswitch usb-modeswitch-data \
 	kmod-usb-serial kmod-usb-serial-ch341 kmod-usb-serial-cp210x \
 	kmod-usb-serial-ftdi kmod-usb-serial-pl2303 \
+	kmod-usb-serial-option kmod-usb-serial-wwan \
+	kmod-usb-storage-extras \
+	kmod-fs-exfat kmod-fs-msdos kmod-fs-nfs kmod-fs-nfsd \
+	kmod-usb-hid \
+	kmod-nf-nathelper kmod-nf-nathelper-extra \
+	kmod-ipt-offload kmod-nf-flow \
+	kmod-tun \
+	usbutils pciutils \
 	luci luci-ssl luci-i18n-base-zh-cn \
 	luci-theme-argon luci-app-argon-config \
 	luci-app-adblock luci-app-ddns luci-app-samba4 luci-app-upnp \
+	luci-app-commands luci-app-ttyd \
+	p910nd luci-app-p910nd \
 	odhcpd-ipv6only luci-proto-ipv6 \
 	swconfig \
 	wpad-basic
