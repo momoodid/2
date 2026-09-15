@@ -700,7 +700,4 @@ define Device/ap8221
 	odhcpd-ipv6only luci-proto-ipv6 \
 	wpad-basic
 endef
-define Device/ap8221
-  DEVICE_PACKAGES := kmod-mt7615e kmod-mt7615-firmware kmod-usb3 wpad-basic
-endef
 TARGET_DEVICES += ap8221
