@@ -692,6 +692,8 @@ define Device/ap8221
 	kmod-usb3 kmod-usb-storage block-mount \
 	kmod-fs-ext4 kmod-fs-vfat ntfs-3g \
 	kmod-usb-net kmod-usb-net-rndis kmod-usb-net-cdc-ether \
+	kmod-usb-net-asix kmod-usb-net-rtl8152 \
+	usb-modeswitch usb-modeswitch-data \
 	kmod-usb-serial kmod-usb-serial-ch341 kmod-usb-serial-cp210x \
 	kmod-usb-serial-ftdi kmod-usb-serial-pl2303 \
 	luci luci-ssl luci-i18n-base-zh-cn \
