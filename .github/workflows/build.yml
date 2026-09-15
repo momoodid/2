@@ -70,7 +70,7 @@ jobs:
           CONFIG_first_card=y
           CONFIG_first_card_name="MT7615E"
           CONFIG_first_card_profile_path="/etc/wireless/mt7615/mt7615.1.2G.dat;/etc/wireless/mt7615/mt7615.1.5G.dat"
-          CONFIG_first_card_init_script="/lib/wifi/mt7615.sh"
+          CONFIG_first_card_init_script="/lib/wifi/mt7615.lua"
           CONFIG_first_card_init_compatible="mt_wifi"
           CONFIG_first_card_EEPROM_offset="0x40000"
           CONFIG_first_card_EEPROM_size="0x4000"
