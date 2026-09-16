@@ -386,14 +386,6 @@ static INT multi_profile_merge_mac_address(
 	UCHAR i = 0;
 	UCHAR j = 0;
 
-	    /* 2.4G MAC: MacAddress1 ~ MacAddress(pf1_num - 1) */
-    for (i = 1; i < mpf->pf1_num; i++) {
-        snprintf(tok_str, sizeof(tok_str), "MacAddress%d", i);
-        if (RTMPGetKeyParameter(tok_str, tmpbuf, 25, buf1, TRUE)) {
-            RTMPAddKeyParameter(tok_str, tmpbuf, 25, final);
-        }
-    }
-
 	/* set file parameter to portcfg*/
 	if (RTMPGetKeyParameter("MacAddress", tmpbuf, 25, buf2, TRUE)) {
 		snprintf(tok_str, sizeof(tok_str), "MacAddress%d", mpf->pf1_num);
