@@ -1,5 +1,0 @@
-#!/bin/sh
-sleep 10
-ifconfig ra0 up
-ifconfig rax0 up
-exit 0
