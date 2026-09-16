@@ -311,6 +311,12 @@ function mtkwifi.__profile_applied_settings_path(profile)
     return bak
 end
 
+function mtkwifi.__profile_bak_path(profile)
+    local bak = "/tmp/mtk/wifi/"..string.match(profile, "([^/]+)\.dat")..".last"
+    os.execute("mkdir -p /tmp/mtk/wifi")
+    return bak
+end
+
 -- if path2 is not given, use backup of path1.
 function mtkwifi.diff_profile(path1, path2)
     assert(path1)
