@@ -962,7 +962,7 @@ function mtkwifi.__setup_apcli(cfgs, devname, mainidx, subidx)
         apcli.vifidx = "1"
         local iwapcli = mtkwifi.read_pipe("iwconfig "..apcli_name.." | grep ESSID 2>/dev/null")
 
-        local _,_,ssid = string.find(iwapcli, "ESSID:\"(.*)\"")
+        local _,_,ssid = string.find(iwapcli or "", "ESSID:\"(.*)\"")
         local flags = tonumber(mtkwifi.read_pipe("cat /sys/class/net/"..apcli_name.."/flags 2>/dev/null")) or 0
         apcli.state = flags%2 == 1 and "up" or "down"
         if not ssid or ssid == "" then
