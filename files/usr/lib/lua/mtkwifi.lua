@@ -792,6 +792,17 @@ function mtkwifi.token_get(str, n, v)
     return tmp[tonumber(n)] or v
 end
 
+function mtkwifi.debug(...)
+    local f = io.open("/tmp/mtkwifi.dbg.log", "a")
+    if f then
+        for _, v in ipairs({...}) do
+            f:write(tostring(v) .. " ")
+        end
+        f:write("\n")
+        f:close()
+    end
+end
+
 function mtkwifi.search_dev_and_profile_orig()
     local nixio = require("nixio")
     local dir = io.popen("ls /etc/wireless/")
