@@ -57,6 +57,13 @@ jobs:
           # CONFIG_PACKAGE_kmod-mt7615-firmware is not set
           CONFIG_PACKAGE_kmod-mt_wifi=y
           CONFIG_PACKAGE_wifi-l1profile=y
+          CONFIG_PACKAGE_uci2dat=y
+          CONFIG_PACKAGE_wificonf=y
+          CONFIG_PACKAGE_wireless-tools=y
+
+          CONFIG_PACKAGE_wpad=y
+          CONFIG_PACKAGE_hostapd-utils=y
+          
           CONFIG_MTK_SUPPORT_OPENWRT=y
           CONFIG_MTK_WIFI_DRIVER=y
           CONFIG_MTK_FIRST_IF_MT7615E=y
@@ -124,20 +131,112 @@ jobs:
 
       - name: Verify config
         run: |
-          echo "===== 检查闭源驱动关键项 ====="
-          grep -i "CONFIG_TARGET_ramips_mt7621_DEVICE_ap8221=y" .config || echo "❌ ap8221 没被选中"
-          grep -i "CONFIG_PACKAGE_kmod-mt_wifi=y" .config || echo "❌ 闭源驱动 kmod-mt_wifi 没被选中"
-          grep -i "CONFIG_PACKAGE_wifi-l1profile=y" .config || echo "❌ wifi-l1profile 没被选中"
-          grep -i "CONFIG_PACKAGE_kmod-mt7615e" .config && echo "⚠️ 开源 mt7615e 可能仍被选中，请检查" || echo "✅ 开源 mt7615e 已禁用"
-          echo "===== 检查 eeprom 偏移 ====="
-          grep -i "CONFIG_first_card_EEPROM_offset" .config || echo "❌ EEPROM offset 没配置"
-          grep -i "CONFIG_first_card_EEPROM_size" .config || echo "❌ EEPROM size 没配置"
-          grep -i "CONFIG_first_card_profile_path" .config || echo "❌ profile path 没配置"
-          grep -i "CONFIG_MTK_DBDC_MODE=y" .config || echo "❌ DBDC 模式没开"
-          grep -i "CONFIG_MTK_APCLI_SUPPORT=y" .config || echo "❌ APCLI 没开，wapp.c 可能编译失败"
-          echo "===== 检查是否选错设备 ====="
-          grep -i "CONFIG_TARGET_ramips_mt7621_DEVICE_netgear_r6350=y" .config && echo "❌ 选成 R6350 了！" || echo "✅ 没有选 R6350"
+          set -eu
 
+          echo "===== 检查闭源驱动关键项 ====="
+          grep -q '^CONFIG_TARGET_ramips_mt7621_DEVICE_ap8221=y$' .config || {
+            echo "❌ ap8221 没被选中"
+            exit 1
+          }
+
+          grep -q '^CONFIG_PACKAGE_kmod-mt_wifi=y$' .config || {
+            echo "❌ 闭源驱动 kmod-mt_wifi 没被选中"
+            exit 1
+          }
+
+          grep -q '^CONFIG_PACKAGE_wifi-l1profile=y$' .config || {
+            echo "❌ wifi-l1profile 没被选中"
+            exit 1
+          }
+
+          echo "✅ MTK 闭源驱动关键项正常"
+
+          echo "===== 检查开源 mt7615 是否被误选 ====="
+          if grep -q '^CONFIG_PACKAGE_kmod-mt7615e=y$' .config; then
+            echo "❌ 开源 mt7615e 被选中"
+            exit 1
+          fi
+
+          if grep -q '^CONFIG_PACKAGE_kmod-mt7615-firmware=y$' .config; then
+            echo "❌ 开源 mt7615 固件被选中"
+            exit 1
+          fi
+
+          echo "✅ 开源 mt7615e 及其固件已禁用"
+
+          echo "===== 检查 EEPROM 和 profile ====="
+          grep -q '^CONFIG_first_card_EEPROM_offset=' .config || {
+            echo "❌ EEPROM offset 没配置"
+            exit 1
+          }
+
+          grep -q '^CONFIG_first_card_EEPROM_size=' .config || {
+            echo "❌ EEPROM size 没配置"
+            exit 1
+          }
+
+          grep -q '^CONFIG_first_card_profile_path=' .config || {
+            echo "❌ profile path 没配置"
+            exit 1
+          }
+
+          grep -q '^CONFIG_MTK_DBDC_MODE=y$' .config || {
+            echo "❌ DBDC 模式没开"
+            exit 1
+          }
+
+          grep -q '^CONFIG_MTK_APCLI_SUPPORT=y$' .config || {
+            echo "❌ APCLI 没开"
+            exit 1
+          }
+
+          echo "===== 检查设备选择 ====="
+          if grep -q '^CONFIG_TARGET_ramips_mt7621_DEVICE_netgear_r6350=y$' .config; then
+            echo "❌ 选成 R6350 了"
+            exit 1
+          fi
+
+          echo "✅ 设备选择正常"
+
+          echo "===== 检查 hostapd ====="
+          grep -q '^CONFIG_PACKAGE_wpad=y$' .config || {
+            echo "❌ wpad 没有生效"
+            exit 1
+          }
+
+          grep -q '^CONFIG_PACKAGE_hostapd-utils=y$' .config || {
+            echo "❌ hostapd-utils 没有生效"
+            exit 1
+          }
+
+          if grep -Eq '^CONFIG_PACKAGE_(hostapd|hostapd-basic|hostapd-mini|wpad-basic|wpad-mini)=y$' .config; then
+            echo "❌ 选中了与 wpad 冲突的 hostapd/wpad 变体："
+            grep -E '^CONFIG_PACKAGE_(hostapd|hostapd-basic|hostapd-mini|wpad|wpad-basic|wpad-mini)=' .config
+            exit 1
+          fi
+
+          echo "✅ hostapd 配置正常"
+
+          echo "===== 检查源文件 ====="
+          test -x files/sbin/wifi || {
+            echo "❌ files/sbin/wifi 不存在或没有执行权限"
+            exit 1
+          }
+
+          test -x files/sbin/hostapd_loader.sh || {
+            echo "❌ files/sbin/hostapd_loader.sh 不存在或没有执行权限"
+            exit 1
+          }
+
+          test -x files/etc/init.d/hostapd || {
+            echo "❌ files/etc/init.d/hostapd 不存在或没有执行权限"
+            exit 1
+          }
+
+          echo "✅ 无线启动脚本检查正常"
+
+      - name: Download
+        run: make download -j8
       - name: Download
         run: make download -j8
 
