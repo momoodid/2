@@ -278,13 +278,53 @@ function vif_del(dev, vif)
     luci.http.redirect(luci.dispatcher.build_url("admin", "mtk", "wifi"))
 end
 
-function vif_disable(iface)
-    os.execute("ifconfig "..iface.." down")
+function vif_disable(dev, vif)
+    local devname, vifname = dev, vif
+    local devs = mtkwifi.get_all_devs()
+    local profile = devs[devname].profile
+    local cfgs = mtkwifi.load_profile(profile)
+    local idx = devs[devname]["vifs"][vifname].vifidx
+
+    if idx then
+        cfgs["SSID"..idx] = ""
+        mtkwifi.save_profile(cfgs, profile)
+    end
+
+    local uci = require("luci.model.uci").cursor()
+    uci:foreach("wireless", "wifi-iface",
+        function(s)
+            if s.ifname == vifname then
+                uci:set("wireless", s[".name"], "disabled", "1")
+            end
+        end)
+    uci:commit("wireless")
+
+    os.execute("ifconfig "..vifname.." down")
     luci.http.redirect(luci.dispatcher.build_url("admin", "mtk", "wifi"))
 end
 
-function vif_enable(iface)
-    os.execute("ifconfig "..iface.." up")
+function vif_enable(dev, vif)
+    local devname, vifname = dev, vif
+    local devs = mtkwifi.get_all_devs()
+    local profile = devs[devname].profile
+    local cfgs = mtkwifi.load_profile(profile)
+    local idx = devs[devname]["vifs"][vifname].vifidx
+
+    if idx then
+        cfgs["SSID"..idx] = cfgs["SSID"..idx] or "MTK_AP"
+        mtkwifi.save_profile(cfgs, profile)
+    end
+
+    local uci = require("luci.model.uci").cursor()
+    uci:foreach("wireless", "wifi-iface",
+        function(s)
+            if s.ifname == vifname then
+                uci:set("wireless", s[".name"], "disabled", "0")
+            end
+        end)
+    uci:commit("wireless")
+
+    os.execute("ifconfig "..vifname.." up")
     luci.http.redirect(luci.dispatcher.build_url("admin", "mtk", "wifi"))
 end
 
