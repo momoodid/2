@@ -2368,6 +2368,11 @@ static VOID EventExtEventHandler(RTMP_ADAPTER *pAd, UINT8 ExtEID, UINT8 *Data,
 		event_get_tx_statistic_handle(pAd, Data, Length);
 		break;
 #endif /*RACTRL_FW_OFFLOAD_SUPPORT*/
+		case 0x7:
+		MTWF_LOG(DBG_CAT_FW, DBG_SUBCAT_ALL, DBG_LVL_OFF,
+				 ("%s: Ext Event(7), Length=%u\n", __func__, Length));
+		hex_dump("Ext Event 7", Data, Length);
+		break;
 	default:
 		MTWF_LOG(DBG_CAT_FW, DBG_SUBCAT_ALL, DBG_LVL_OFF,
 				 ("%s: Unknown Ext Event(%x)\n", __func__, ExtEID));
