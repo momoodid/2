@@ -129,7 +129,7 @@ config wifi-iface
 	option key '12345678'
 	option aes 'ccmp+tkip'
 	option inactive '0'
-	option disabled '0'
+	option disabled '1'
 	option hidden '0'
 	option rrmenable '0'
 	option radio_id '0'
@@ -309,7 +309,7 @@ config wifi-iface
 	option key '12345678'
 	option aes 'ccmp+tkip'
 	option inactive '0'
-	option disabled '0'
+	option disabled '1'
 	option hidden '0'
 	option rrmenable '0'
 	option radio_id '1'
@@ -338,7 +338,7 @@ config wifi-iface
 	option MbssMaxStaNum '64'
 	option key '15551683778'
 	option ssid 'ChinaNet-6C4E'
-	option disabled '1'
+	option disabled '0'
 
 config wifi-iface
 	option device 'MT761512'
