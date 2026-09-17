@@ -11,6 +11,24 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Fix wireless script permissions
+        shell: bash
+        run: |
+          set -eux
+
+          chmod 0755 files/sbin/wifi
+          chmod 0755 files/sbin/hostapd_loader.sh
+          chmod 0755 files/etc/init.d/hostapd
+
+          test -x files/sbin/wifi
+          test -x files/sbin/hostapd_loader.sh
+          test -x files/etc/init.d/hostapd
+
+          stat -c '%A %a %n' \
+            files/sbin/wifi \
+            files/sbin/hostapd_loader.sh \
+            files/etc/init.d/hostapd
+
       - name: Install dependencies
         run: |
           sudo apt update
