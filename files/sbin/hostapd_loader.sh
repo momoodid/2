@@ -111,14 +111,25 @@ remove_vap_from_hostapd(){
   local lockname=/var/run/hostapd-$ifname.lock
   local confname=/var/run/hostapd-$ifname.conf
   local maclistname=/var/run/hostapd-$ifname.maclist
+  local vap_socket="/var/run/hostapd-$ifname"
 
-  if [ -f "$lockname" ]; then
-    hostapd_cli -p /var/run/hostapd raw REMOVE "$ifname"
-    rm -f "$lockname"
-    rm -f "$confname"
-    rm -f "$maclistname"
+  if [ ! -f "$lockname" ]; then
+    $LOG_ERR "lock $lockname not found, skip remove $ifname"
+    return 1
+  fi
+
+  # 使用VAP自身独立socket，不再使用global socket
+  hostapd_cli -p "$vap_socket" raw REMOVE "$ifname"
+  local ret=$?
+  if [ $ret -eq 0 ]; then
+    rm -f "$lockname" "$confname" "$maclistname"
+    rm -rf "$vap_socket"
+  else
+    $LOG_ERR "raw REMOVE $ifname failed, socket=$vap_socket ret=$ret"
+    return $ret
   fi
 }
+
 
 vap_ifname=$1
 vap_device=$2
