@@ -78,10 +78,8 @@ jobs:
           CONFIG_PACKAGE_uci2dat=y
           CONFIG_PACKAGE_wificonf=y
           CONFIG_PACKAGE_wireless-tools=y
-
-          CONFIG_PACKAGE_wpad=y
+          CONFIG_PACKAGE_wpad-basic=y
           CONFIG_PACKAGE_hostapd-utils=y
-          
           CONFIG_MTK_SUPPORT_OPENWRT=y
           CONFIG_MTK_WIFI_DRIVER=y
           CONFIG_MTK_FIRST_IF_MT7615E=y
@@ -217,7 +215,7 @@ jobs:
           echo "✅ 设备选择正常"
 
           echo "===== 检查 hostapd ====="
-          grep -q '^CONFIG_PACKAGE_wpad=y$' .config || {
+          grep -q '^CONFIG_PACKAGE_wpad-basic=y$' .config || {
             echo "❌ wpad 没有生效"
             exit 1
           }
@@ -227,7 +225,7 @@ jobs:
             exit 1
           }
 
-          if grep -Eq '^CONFIG_PACKAGE_(hostapd|hostapd-basic|hostapd-mini|wpad-basic|wpad-mini)=y$' .config; then
+          if grep -Eq '^CONFIG_PACKAGE_(hostapd|hostapd-basic|hostapd-mini|wpad|wpad-mini)=y$' .config; then
             echo "❌ 选中了与 wpad 冲突的 hostapd/wpad 变体："
             grep -E '^CONFIG_PACKAGE_(hostapd|hostapd-basic|hostapd-mini|wpad|wpad-basic|wpad-mini)=' .config
             exit 1
