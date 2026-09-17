@@ -75,11 +75,11 @@ jobs:
           CONFIG_MTK_FIRST_IF_EEPROM_FLASH=y
           CONFIG_MTK_DBDC_MODE=y
           CONFIG_first_card=y
-          CONFIG_first_card_name="MT7615E"
+          CONFIG_first_card_name="MT7615"
           CONFIG_first_card_profile_path="/etc/wireless/mt7615/mt7615.1.2G.dat;/etc/wireless/mt7615/mt7615.1.5G.dat"
           CONFIG_first_card_init_script="/lib/wifi/mt7615.lua"
           CONFIG_first_card_init_compatible="mt7615"
-          CONFIG_first_card_EEPROM_offset="0x40000"
+          CONFIG_first_card_EEPROM_offset="0x0"
           CONFIG_first_card_EEPROM_size="0x4000"
           CONFIG_first_card_EEPROM_name="e2p"
           CONFIG_first_card_main_ifname="ra0;rax0"
