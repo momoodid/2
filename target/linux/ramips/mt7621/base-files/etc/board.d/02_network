@@ -60,6 +60,7 @@ ramips_setup_interfaces()
 	zyxel,nwa55axe)
 		ucidef_set_interface_lan "lan"
 		;;
+    skspruce,ap8221|\
 	asiarf,ap7621-001|\
 	humax,e10|\
 	wavlink,ws-wn572hp3-4g|\
@@ -215,6 +216,11 @@ ramips_setup_macs()
 		lan_mac=$(cat /sys/class/net/eth0/address)
 		label_mac=$lan_mac
 		wan_mac=$(macaddr_add "$lan_mac" 1)
+		;;
+	skspruce,ap8221)
+		lan_mac=$(mtd_get_mac_binary factory 0xe000)
+		wan_mac=$(macaddr_add "$lan_mac" 1)
+		label_mac=$lan_mac
 		;;
 	dlink,covr-x1860-a1)
 		label_mac=$(mtd_get_mac_ascii config2 factory_mac)
