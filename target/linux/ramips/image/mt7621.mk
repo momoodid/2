@@ -189,6 +189,16 @@ define Device/adslr_g7
 endef
 TARGET_DEVICES += adslr_g7
 
+define Device/skspruce_ap8221
+  $(Device/dsa-migration)
+  IMAGE_SIZE := 32448k
+  DEVICE_VENDOR := SKSpruce
+  DEVICE_MODEL := AP8221
+  DEVICE_DTS := mt7621_AP8221
+  DEVICE_PACKAGES := kmod-mt7615e kmod-mt7615-firmware
+endef
+TARGET_DEVICES += skspruce_ap8221
+
 define Device/afoundry_ew1200
   $(Device/dsa-migration)
   $(Device/uimage-lzma-loader)
