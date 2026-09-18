@@ -75,7 +75,8 @@ jobs:
           CONFIG_PACKAGE_kmod-mt7615e=y
           CONFIG_PACKAGE_kmod-mt7615-firmware=y
           CONFIG_PACKAGE_wpad-basic-openssl=y
-          CONFIG_PACKAGE_iw=y
+          CONFIG_PACKAGE_libustream-openssl=y
+          CONFIG_PACKAGE_wpad-basic-mbedtls=n
           CONFIG_PACKAGE_iw-full=y
           CONFIG_PACKAGE_iwinfo=y
 
