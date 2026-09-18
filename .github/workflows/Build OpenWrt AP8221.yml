@@ -74,7 +74,7 @@ jobs:
           CONFIG_PACKAGE_kmod-mt7615-common=y
           CONFIG_PACKAGE_kmod-mt7615e=y
           CONFIG_PACKAGE_kmod-mt7615-firmware=y
-          CONFIG_PACKAGE_wpad-basic-mbedtls=y
+          CONFIG_PACKAGE_wpad-basic=y
           CONFIG_PACKAGE_iw=y
           CONFIG_PACKAGE_iw-full=y
           CONFIG_PACKAGE_iwinfo=y
